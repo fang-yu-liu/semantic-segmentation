@@ -59,12 +59,14 @@ def layers(vgg_layer3_out, vgg_layer4_out, vgg_layer7_out, num_classes):
     # Add 1x1 convolution layer to the last layer of vgg
     conv_1x1_kernel_size = 1
     conv_1x1 = tf.layers.conv2d(vgg_layer7_out, num_classes, conv_1x1_kernel_size, padding='same', 
+                                kernel_initializer= tf.random_normal_initializer(stddev=0.01), 
                                 kernel_regularizer=tf.contrib.layers.l2_regularizer(1e-3))
     # Upsample
     output_kernel_size = (4, 4)
     output_strides = (2, 2)
     output = tf.layers.conv2d_transpose(conv_1x1, num_classes, 
                                         output_kernel_size, output_strides, padding='same',
+                                        kernel_initializer= tf.random_normal_initializer(stddev=0.01), 
                                         kernel_regularizer=tf.contrib.layers.l2_regularizer(1e-3))
     tf.Print(output, [tf.shape(output)[1:3]])
     
@@ -73,12 +75,14 @@ def layers(vgg_layer3_out, vgg_layer4_out, vgg_layer7_out, num_classes):
     pool4_strides = 1
     pool4 = tf.layers.conv2d(vgg_layer4_out, num_classes, 
                              pool4_kernel_size, pool4_strides, padding='same',
+                             kernel_initializer= tf.random_normal_initializer(stddev=0.01), 
                              kernel_regularizer=tf.contrib.layers.l2_regularizer(1e-3))
     output = tf.add(output, pool4)
     output_kernel_size = (4, 4)
     output_strides = (2, 2)
     output = tf.layers.conv2d_transpose(output, num_classes, 
                                         output_kernel_size, output_strides, padding='same',
+                                        kernel_initializer= tf.random_normal_initializer(stddev=0.01), 
                                         kernel_regularizer=tf.contrib.layers.l2_regularizer(1e-3))
     tf.Print(output, [tf.shape(output)[1:3]])
 
@@ -86,12 +90,14 @@ def layers(vgg_layer3_out, vgg_layer4_out, vgg_layer7_out, num_classes):
     pool3_strides = 1
     pool3 = tf.layers.conv2d(vgg_layer3_out, num_classes, 
                              pool3_kernel_size, pool3_strides, padding='same',
+                             kernel_initializer= tf.random_normal_initializer(stddev=0.01), 
                              kernel_regularizer=tf.contrib.layers.l2_regularizer(1e-3))
     output = tf.add(output, pool3)
     output_kernel_size = (16, 16)
     output_strides = (8, 8)
     output = tf.layers.conv2d_transpose(output, num_classes, 
                                         output_kernel_size, output_strides, padding='same',
+                                        kernel_initializer= tf.random_normal_initializer(stddev=0.01), 
                                         kernel_regularizer=tf.contrib.layers.l2_regularizer(1e-3))
     tf.Print(output, [tf.shape(output)[1:3]])
 
@@ -154,7 +160,7 @@ def run():
     runs_dir = './runs'
     tests.test_for_kitti_dataset(data_dir)
     
-    epochs = 45
+    epochs = 50
     batch_size = 10
 
     # Download pretrained vgg model
